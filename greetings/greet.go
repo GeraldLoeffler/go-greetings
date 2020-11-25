@@ -1,3 +1,4 @@
+// Package greetings provides simple functions to greet named individuals.
 package greetings
 
 import (
@@ -21,13 +22,16 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+// Greet returns a random greeting to the named individual, or an error if no name is given.
 func Greet(name string) (string, error) {
 	if name == "" {
-		return *new(string), errors.New("Missing name")
+		return "", errors.New("Missing name")
 	}
 	return fmt.Sprintf(randomGreeting(), name), nil
 }
 
+// GreetAll returns random greetings to the named individuals, as a map from name to greeting,
+// or an error if any name is missing.
 func GreetAll(names []string) (map[string]string, error) {
 	gs := make(map[string]string)
 	for _, n := range names {
