@@ -16,7 +16,7 @@ func TestGreetHappy(t *testing.T) {
 	}
 	for _, c := range cases {
 		got, err := Greet(c.in)
-		if err != nil || got.Name != c.in || !c.want.MatchString(got.Greeting) || c.want.MatchString(got.greetingFormat) {
+		if err != nil || got.Name != c.in || !c.want.MatchString(got.Greeting) || c.want.MatchString(got.format) {
 			t.Errorf("Greet(%q) = (%q, %q), want match to %q", c.in, got, err, c.want)
 		}
 	}

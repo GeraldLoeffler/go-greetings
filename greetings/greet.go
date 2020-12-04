@@ -10,9 +10,9 @@ import (
 )
 
 type Greeting struct {
-	Name           string // the name of the individual being greeted
-	Greeting       string // the complete greeting to the named individual
-	greetingFormat string // the format string on which the greeting is based (unexported)
+	Name     string // Name of the individual being greeted
+	Greeting string // Complete greeting to the named individual
+	format   string // Format string on which the greeting is based (unexported)
 }
 
 var formats []string = []string{
