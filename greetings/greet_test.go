@@ -1,6 +1,7 @@
 package greetings
 
 import (
+	"reflect"
 	"regexp"
 	"testing"
 )
@@ -15,7 +16,7 @@ func TestGreetHappy(t *testing.T) {
 	}
 	for _, c := range cases {
 		got, err := Greet(c.in)
-		if err != nil || !c.want.MatchString(got) {
+		if err != nil || got.Name != c.in || !c.want.MatchString(got.Greeting) || c.want.MatchString(got.greetingFormat) {
 			t.Errorf("Greet(%q) = (%q, %q), want match to %q", c.in, got, err, c.want)
 		}
 	}
@@ -24,7 +25,7 @@ func TestGreetHappy(t *testing.T) {
 func TestGreetError(t *testing.T) {
 	n := ""
 	got, err := Greet(n)
-	if err == nil || got != "" {
+	if err == nil || !reflect.ValueOf(got).IsZero() {
 		t.Fatalf("Greet(%q) = (%q, %q), want error", n, got, err)
 	}
 }

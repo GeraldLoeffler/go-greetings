@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+type Greeting struct {
+	Name           string // the name of the individual being greeted
+	Greeting       string // the complete greeting to the named individual
+	greetingFormat string // the format string on which the greeting is based (unexported)
+}
+
 var formats []string = []string{
 	"Hello %v, my dear.",
 	"Good morning %v!",
@@ -18,22 +24,24 @@ var formats []string = []string{
 var formatsLen int = len(formats)
 
 func init() {
-	log.Print("Initializing package greetings")
+	log.Print("Initializing file greet.go")
 	rand.Seed(time.Now().UnixNano())
 }
 
 // Greet returns a random greeting to the named individual, or an error if no name is given.
-func Greet(name string) (string, error) {
+func Greet(name string) (Greeting, error) {
 	if name == "" {
-		return "", errors.New("Missing name")
+		return Greeting{}, errors.New("Missing name")
 	}
-	return fmt.Sprintf(randomGreeting(), name), nil
+	gf := randomGreetingFormat()
+	g := Greeting{name, fmt.Sprintf(gf, name), gf}
+	return g, nil
 }
 
 // GreetAll returns random greetings to the named individuals, as a map from name to greeting,
 // or an error if any name is missing.
-func GreetAll(names []string) (map[string]string, error) {
-	gs := make(map[string]string)
+func GreetAll(names []string) (map[string]Greeting, error) {
+	gs := make(map[string]Greeting)
 	for _, n := range names {
 		g, err := Greet(n)
 		if err != nil {
@@ -45,6 +53,6 @@ func GreetAll(names []string) (map[string]string, error) {
 }
 
 // A random greeting as a format suitable for the *Printf functions with one placeholder for the name.
-func randomGreeting() string {
+func randomGreetingFormat() string {
 	return formats[rand.Intn(formatsLen)]
 }
